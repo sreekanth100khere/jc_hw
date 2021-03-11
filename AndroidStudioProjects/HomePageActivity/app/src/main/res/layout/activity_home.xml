@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:text="Country Names"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:gravity="center"
@@ -16,7 +17,6 @@
         android:layout_width="fill_parent"
         android:layout_weight="1"
         android:id="@+id/id_rv"
-        android:background="@android:color/holo_red_dark"
         android:layout_height="0dip"/>
 
 </LinearLayout>

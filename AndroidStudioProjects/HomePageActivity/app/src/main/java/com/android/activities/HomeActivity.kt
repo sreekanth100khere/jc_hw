@@ -31,8 +31,5 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    fun gotoDetails(){
-            val myIntent = Intent(this@HomeActivity, DetailsActivity::class.java)
-            startActivity(myIntent)
-     }
+
 }
