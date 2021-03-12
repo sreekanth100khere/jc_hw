@@ -1,9 +1,10 @@
 package com.android.activities
 
 import org.intellij.lang.annotations.Language
+import java.io.Serializable
 
 
-class RetroResponse {
+class RetroResponse:Serializable{
     var name: String? = null
     var topLevelDomain: List<String>? = null
     var alpha2Code: String? = null
@@ -23,7 +24,7 @@ class RetroResponse {
     var nativeName: String? = null
     var numericCode: String? = null
     var currencies: List<Currency>? = null
-    var languages: List<Language>? = null
+    var languages: List<com.android.activities.Language>? = null
     var translations: Translations? = null
     var flag: String? = null
     var regionalBlocs: List<RegionalBloc>? = null

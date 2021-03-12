@@ -1,6 +1,8 @@
 package com.android.activities
 
-class Translations {
+import java.io.Serializable
+
+class Translations:Serializable {
     var de: String? = null
     var es: String? = null
     var fr: String? = null
