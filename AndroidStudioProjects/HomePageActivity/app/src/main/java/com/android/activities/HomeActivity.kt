@@ -4,18 +4,25 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Response
+import java.lang.Exception
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 
 class HomeActivity : AppCompatActivity() {
     lateinit var mRv:RecyclerView
     lateinit var  mEditText: EditText
     var mResponseList:ArrayList<RetroResponse>? = null
+    var mSortSpinner:Spinner? = null
+    var mFilteredList: ArrayList<RetroResponse> = ArrayList<RetroResponse>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,26 +31,103 @@ class HomeActivity : AppCompatActivity() {
 
         mRv = findViewById(R.id.id_rv)
 
+        mSortSpinner = findViewById(R.id.id_sort_spinner) as Spinner
+
+        val items: ArrayList<String> = ArrayList()
+
+        items.add("A-Z")
+        items.add("Z-A")
+
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            applicationContext,
+            android.R.layout.simple_spinner_dropdown_item,
+            items
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        mSortSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                if(position == 0){
+                    Toast.makeText(mEditText.context, "Sorted by A-Z", Toast.LENGTH_SHORT)
+                        .show()
+                    val sortByAscending = mResponseList?.sortedBy {
+                        RetroResponse -> RetroResponse.name
+                    }
+
+                    try {
+                        var sortedAsc:ArrayList<RetroResponse> = ArrayList<RetroResponse>()
+                        for( retroResponse in sortByAscending!!){
+                            sortedAsc.add(retroResponse)
+
+                        }
+                        displayDataList(sortedAsc)
+
+                    }catch (e:Exception){
+                        Log.e("Exception",e.message.toString())
+                    }
+
+
+                }else if (position == 1){
+                    Toast.makeText(mEditText.context, "Sorted by Z-A", Toast.LENGTH_SHORT)
+                        .show()
+
+
+                    val sortByDescending = mResponseList?.sortedByDescending {
+                            RetroResponse -> RetroResponse.name
+                    }
+
+                    try {
+                        var sortedDes:ArrayList<RetroResponse> = ArrayList<RetroResponse>()
+                        for( retroResponse in sortByDescending!!){
+                            sortedDes.add(retroResponse)
+
+                        }
+                        displayDataList(sortedDes)
+
+                    }catch (e:Exception){
+                        Log.e("Exception",e.message.toString())
+
+                    }
+
+
+                }
+
+            }
+        }
+
+
+            mSortSpinner?.setAdapter(adapter)
         mEditText = findViewById(R.id.id_search_et)
 
 
         mEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-               var filteredList:ArrayList<RetroResponse>  = ArrayList<RetroResponse>()
-                for (item in mResponseList!!){
-                    if(item.name?.contains(s.toString()) == true){
-                        filteredList.add(item)
+                var mFilteredList: ArrayList<RetroResponse> = ArrayList<RetroResponse>()
+
+                for (item in mResponseList!!) {
+                    if (item.name?.contains(s.toString()) == true) {
+                        mFilteredList.add(item)
                     }
                 }
 
                 //Now we have filtered list...
 
-                displayDataList(filteredList)
+                displayDataList(mFilteredList)
 
-                if(filteredList.size == 0){
-                    Toast.makeText(mEditText.context,"No Search Result Found",Toast.LENGTH_SHORT).show()
+                if (mFilteredList.size == 0) {
+                    Toast.makeText(mEditText.context, "No Search Result Found", Toast.LENGTH_SHORT)
+                        .show()
                 }
-
 
 
             }
@@ -59,12 +143,17 @@ class HomeActivity : AppCompatActivity() {
         /*Create handle for the RetrofitInstance interface*/
         /*Create handle for the RetrofitInstance interface*/
 
-        val service                                     = RetrofitClientInstance.getRetrofitInstance().create(GetDataService::class.java)
+        val service                                     = RetrofitClientInstance.getRetrofitInstance().create(
+            GetDataService::class.java
+        )
         val call: retrofit2.Call<List<RetroResponse>>   = service.getResponse
 
         call.enqueue(object : retrofit2.Callback<List<RetroResponse>> {
 
-            override fun onResponse(call: retrofit2.Call<List<RetroResponse>>?, response: Response<List<RetroResponse>>?) {
+            override fun onResponse(
+                call: retrofit2.Call<List<RetroResponse>>?,
+                response: Response<List<RetroResponse>>?
+            ) {
 
                 mResponseList = response?.body() as ArrayList<RetroResponse>
 
@@ -76,7 +165,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onFailure(call: retrofit2.Call<List<RetroResponse>>?, t: Throwable?) {
 //                progressDoalog.dismiss();
 //                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                Log.d("Error","error")
+                Log.d("Error", "error")
             }
         })
 
@@ -85,7 +174,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
-    private fun displayDataList(response:ArrayList<RetroResponse>?) {
+    private fun displayDataList(response: ArrayList<RetroResponse>?) {
 
 
         var adapter:RvAdapter         = response?.let { RvAdapter(this, it) }!!
