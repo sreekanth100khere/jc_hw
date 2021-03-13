@@ -24,11 +24,15 @@ class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
 
     override fun onBindViewHolder(holder: CountryRowVh, position: Int) {
         val country:String = mCountryList.get(position).name!!
+        val population:Int               = mCountryList.get(position).population
+        val capital: String?             =  mCountryList.get(position).capital
+        val region:String?               = mCountryList.get(position).region
+        val flag:String?                            =  mCountryList.get(position).flag
         holder.countryNameTv.text = country
         holder.mRowParentLl.setOnClickListener(View.OnClickListener {
             Toast.makeText(context,"List row clicked "+mCountryList.get(position).name,Toast.LENGTH_LONG).show()
 
-            gotoDetails(country)
+            gotoDetails(country,capital,region,population,flag)
             var activity:Activity =  context as Activity
             activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
@@ -52,12 +56,14 @@ class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
         }
     }
 
-    fun gotoDetails(countryName:String){
+    fun gotoDetails(iCountryName:String?,iCapital:String?,iRegion:String?,iPopulation:Int?,iFlag:String?){
         val myIntent = Intent(context, DetailsActivity::class.java)
-        myIntent.putExtra("countryName",countryName)
+        myIntent.putExtra("countryName",iCountryName)
+        myIntent.putExtra("capital",iCapital)
+        myIntent.putExtra("region",iRegion)
+        myIntent.putExtra("population",iPopulation)
+        myIntent.putExtra("flag",iFlag)
         context?.startActivity(myIntent)
-
-
     }
 
 }
