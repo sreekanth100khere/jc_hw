@@ -1,5 +1,6 @@
 package com.android.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -28,6 +29,8 @@ class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
             Toast.makeText(context,"List row clicked "+mCountryList.get(position).name,Toast.LENGTH_LONG).show()
 
             gotoDetails(country)
+            var activity:Activity =  context as Activity
+            activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         })
     }
@@ -53,6 +56,8 @@ class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
         val myIntent = Intent(context, DetailsActivity::class.java)
         myIntent.putExtra("countryName",countryName)
         context?.startActivity(myIntent)
+
+
     }
 
 }
