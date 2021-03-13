@@ -39,7 +39,7 @@ class DetailsActivity : AppCompatActivity() {
         mRegionTv        =  findViewById(R.id.id_region_value_tv)
         mCapitalTv       =  findViewById(R.id.id_capital_value_tv)
 //        mFlagIv                 =  findViewById(R.id.id_flag_iv)
-        mTitleTv?.text   =   "Details :" + countryName
+        mTitleTv?.text   =   "Country :" + countryName
 
         mPopulationTv?.text = population.toString()
         mRegionTv?.text = region

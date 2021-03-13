@@ -12,38 +12,53 @@
         android:id="@+id/id_details_title_tv"
         android:gravity="center_horizontal"
         android:paddingTop="10dp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_height="100dp">
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:text="Capital :"
+            android:gravity="center_vertical"
             android:layout_height="fill_parent"/>
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
             android:text=""
+            android:textSize="20sp"
+            android:gravity="center_vertical"
             android:id="@+id/id_capital_value_tv"
             android:layout_height="fill_parent"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_marginStart="10dp"
+        android:gravity="center_vertical"
+        android:layout_height="100dp">
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
             android:text="Region :"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_height="fill_parent"/>
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
             android:text=""
+            android:textSize="20sp"
+            android:gravity="center_vertical"
             android:id="@+id/id_region_value_tv"
             android:layout_height="fill_parent"/>
 
@@ -52,16 +67,23 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_marginStart="10dp"
+        android:gravity="center_vertical"
+        android:layout_height="100dp">
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
             android:text="Population :"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
             android:layout_height="fill_parent"/>
         <TextView
             android:layout_width="0dip"
             android:layout_weight="1"
             android:text=""
+            android:textSize="20sp"
+            android:gravity="center_vertical"
             android:id="@+id/id_population_value_tv"
             android:layout_height="fill_parent"/>
     </LinearLayout>
