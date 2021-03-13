@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,10 @@ class HomeActivity : AppCompatActivity() {
                 //Now we have filtered list...
 
                 displayDataList(filteredList)
+
+                if(filteredList.size == 0){
+                    Toast.makeText(mEditText.context,"No Search Result Found",Toast.LENGTH_SHORT).show()
+                }
 
 
 
