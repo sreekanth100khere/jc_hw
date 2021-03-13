@@ -30,8 +30,6 @@ class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
         val flag:String?                            =  mCountryList.get(position).flag
         holder.countryNameTv.text = country
         holder.mRowParentLl.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context,"List row clicked "+mCountryList.get(position).name,Toast.LENGTH_LONG).show()
-
             gotoDetails(country,capital,region,population,flag)
             var activity:Activity =  context as Activity
             activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
