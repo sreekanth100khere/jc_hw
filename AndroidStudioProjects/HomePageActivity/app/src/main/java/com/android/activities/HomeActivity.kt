@@ -1,9 +1,10 @@
 package com.android.activities
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.widget.Toast
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +13,8 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
     lateinit var mRv:RecyclerView
-    var mCountryList:ArrayList<String> = ArrayList<String>()
-    var mAdapter:RvAdapter? = null
+    lateinit var  mEditText: EditText
+    var mResponseList:ArrayList<RetroResponse>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +22,33 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         mRv = findViewById(R.id.id_rv)
+
+        mEditText = findViewById(R.id.id_search_et)
+
+
+        mEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+               var filteredList:ArrayList<RetroResponse>  = ArrayList<RetroResponse>()
+                for (item in mResponseList!!){
+                    if(item.name?.contains(s.toString()) == true){
+                        filteredList.add(item)
+                    }
+                }
+
+                //Now we have filtered list...
+
+                displayDataList(filteredList)
+
+
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
 
 
         /*Create handle for the RetrofitInstance interface*/
@@ -33,7 +61,11 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onResponse(call: retrofit2.Call<List<RetroResponse>>?, response: Response<List<RetroResponse>>?) {
 
-                generateDataList(response?.body() as ArrayList<RetroResponse>);
+                mResponseList = response?.body() as ArrayList<RetroResponse>
+
+                displayDataList(response?.body() as ArrayList<RetroResponse>);
+
+
             }
 
             override fun onFailure(call: retrofit2.Call<List<RetroResponse>>?, t: Throwable?) {
@@ -48,10 +80,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
-    private fun generateDataList(response:ArrayList<RetroResponse>?) {
+    private fun displayDataList(response:ArrayList<RetroResponse>?) {
+
+
         var adapter:RvAdapter         = response?.let { RvAdapter(this, it) }!!
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this@HomeActivity)
         mRv.setLayoutManager(layoutManager)
         mRv.setAdapter(adapter)
+        mRv.adapter?.notifyDataSetChanged()
     }
 }
