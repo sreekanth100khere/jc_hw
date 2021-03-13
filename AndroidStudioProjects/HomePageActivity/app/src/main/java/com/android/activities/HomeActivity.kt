@@ -22,13 +22,6 @@ class HomeActivity : AppCompatActivity() {
 
         mRv = findViewById(R.id.id_rv)
 
-        mCountryList.add("India")
-        mCountryList.add("Pakistan")
-        mCountryList.add("China")
-        mCountryList.add("Japan")
-        mRv.setLayoutManager(LinearLayoutManager(this))
-        mAdapter = RvAdapter(this, mCountryList)
-        mRv.setAdapter(mAdapter)
 
         /*Create handle for the RetrofitInstance interface*/
         /*Create handle for the RetrofitInstance interface*/
@@ -40,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onResponse(call: retrofit2.Call<List<RetroResponse>>?, response: Response<List<RetroResponse>>?) {
 
-                generateDataList(response?.body());
+                generateDataList(response?.body() as ArrayList<RetroResponse>);
             }
 
             override fun onFailure(call: retrofit2.Call<List<RetroResponse>>?, t: Throwable?) {
@@ -55,8 +48,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
-    private fun generateDataList(response:List<RetroResponse>?) {
-        var adapter:RvAdapter         =  RvAdapter(this, mCountryList)
+    private fun generateDataList(response:ArrayList<RetroResponse>?) {
+        var adapter:RvAdapter         = response?.let { RvAdapter(this, it) }!!
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this@HomeActivity)
         mRv.setLayoutManager(layoutManager)
         mRv.setAdapter(adapter)

@@ -12,9 +12,9 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RvAdapter(context:Context, iCountryList:ArrayList<String>) :
+class RvAdapter(context:Context, iCountryList:ArrayList<RetroResponse>) :
     RecyclerView.Adapter<RvAdapter.CountryRowVh>() {
-    private  var mCountryList: ArrayList<String> = iCountryList
+    private  var mCountryList: ArrayList<RetroResponse> = iCountryList
     private var context: Context? = context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryRowVh {
         context = parent.context
@@ -22,12 +22,12 @@ class RvAdapter(context:Context, iCountryList:ArrayList<String>) :
     }
 
     override fun onBindViewHolder(holder: CountryRowVh, position: Int) {
-        val country:String = mCountryList[position]
+        val country:String = mCountryList.get(position).name!!
         holder.countryNameTv.text = country
         holder.mRowParentLl.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context,"List row clicked "+mCountryList.get(position),Toast.LENGTH_LONG).show()
+            Toast.makeText(context,"List row clicked "+mCountryList.get(position).name,Toast.LENGTH_LONG).show()
 
-            gotoDetails(mCountryList.get(position))
+            gotoDetails(country)
 
         })
     }
