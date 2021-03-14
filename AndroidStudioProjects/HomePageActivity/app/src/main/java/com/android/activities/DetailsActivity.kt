@@ -32,6 +32,10 @@ class DetailsActivity : AppCompatActivity() {
         var capital: String?        = intent.getStringExtra("capital")
         var region: String?         = intent.getStringExtra("region")
         var population:Int?      = intent.getIntExtra("population", 0)
+
+        supportActionBar?.hide()
+
+
 //        var flag:String?            = intent.getStringExtra("flag")
 
         mTitleTv         =   findViewById(R.id.id_details_title_tv)

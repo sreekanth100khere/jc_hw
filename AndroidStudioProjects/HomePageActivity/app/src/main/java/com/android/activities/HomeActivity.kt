@@ -31,6 +31,8 @@ class HomeActivity : AppCompatActivity() {
 
         mRv = findViewById(R.id.id_rv)
 
+        supportActionBar?.hide()
+
         mSortSpinner = findViewById(R.id.id_sort_spinner) as Spinner
 
         val items: ArrayList<String> = ArrayList()

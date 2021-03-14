@@ -20,8 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomePageActivity"
         tools:targetApi="m">
-        <activity android:name="com.android.activities.DetailsActivity"/>
-        <activity android:name=".HomeActivity">
+        <activity android:name="com.android.activities.DetailsActivity"
+            />
+        <activity android:name=".HomeActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
