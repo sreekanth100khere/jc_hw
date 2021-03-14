@@ -7,12 +7,12 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Response
-import java.lang.Exception
 import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 
@@ -38,10 +38,10 @@ class HomeActivity : AppCompatActivity() {
         items.add("A-Z")
         items.add("Z-A")
 
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            applicationContext,
-            android.R.layout.simple_spinner_dropdown_item,
-            items
+        var adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                applicationContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                items
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -51,17 +51,18 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
             ) {
+
+                //TODO: Use filtered list instead of mResponseList so that this will work with search result also.
 
                 if(position == 0){
                     Toast.makeText(mEditText.context, "Sorted by A-Z", Toast.LENGTH_SHORT)
                         .show()
-                    val sortByAscending = mResponseList?.sortedBy {
-                        RetroResponse -> RetroResponse.name
+                    val sortByAscending = mResponseList?.sortedBy { RetroResponse -> RetroResponse.name
                     }
 
                     try {
@@ -72,8 +73,8 @@ class HomeActivity : AppCompatActivity() {
                         }
                         displayDataList(sortedAsc)
 
-                    }catch (e:Exception){
-                        Log.e("Exception",e.message.toString())
+                    }catch (e: Exception){
+                        Log.e("Exception", e.message.toString())
                     }
 
 
@@ -82,8 +83,7 @@ class HomeActivity : AppCompatActivity() {
                         .show()
 
 
-                    val sortByDescending = mResponseList?.sortedByDescending {
-                            RetroResponse -> RetroResponse.name
+                    val sortByDescending = mResponseList?.sortedByDescending { RetroResponse -> RetroResponse.name
                     }
 
                     try {
@@ -94,8 +94,8 @@ class HomeActivity : AppCompatActivity() {
                         }
                         displayDataList(sortedDes)
 
-                    }catch (e:Exception){
-                        Log.e("Exception",e.message.toString())
+                    }catch (e: Exception){
+                        Log.e("Exception", e.message.toString())
 
                     }
 
@@ -126,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
 
                 if (mFilteredList.size == 0) {
                     Toast.makeText(mEditText.context, "No Search Result Found", Toast.LENGTH_SHORT)
-                        .show()
+                            .show()
                 }
 
 
@@ -143,39 +143,20 @@ class HomeActivity : AppCompatActivity() {
         /*Create handle for the RetrofitInstance interface*/
         /*Create handle for the RetrofitInstance interface*/
 
-        val service                                     = RetrofitClientInstance.getRetrofitInstance().create(
-            GetDataService::class.java
-        )
-        val call: retrofit2.Call<List<RetroResponse>>   = service.getResponse
-
-        call.enqueue(object : retrofit2.Callback<List<RetroResponse>> {
-
-            override fun onResponse(
-                call: retrofit2.Call<List<RetroResponse>>?,
-                response: Response<List<RetroResponse>>?
-            ) {
-
-                mResponseList = response?.body() as ArrayList<RetroResponse>
-
-                displayDataList(response?.body() as ArrayList<RetroResponse>);
 
 
-            }
+        val model: CountryViewModel = ViewModelProviders.of(this).get(CountryViewModel::class.java)
 
-            override fun onFailure(call: retrofit2.Call<List<RetroResponse>>?, t: Throwable?) {
-//                progressDoalog.dismiss();
-//                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                Log.d("Error", "error")
-            }
+        model.getResponse()?.observe(this, Observer<List<RetroResponse?>?> { countryList ->
+
+            mResponseList = countryList as ArrayList<RetroResponse>
+            displayDataList(countryList as ArrayList<RetroResponse>?)
         })
-
-
 
     }
 
     /*Method to generate List of data using RecyclerView with custom adapter*/
     private fun displayDataList(response: ArrayList<RetroResponse>?) {
-
 
         var adapter:RvAdapter         = response?.let { RvAdapter(this, it) }!!
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this@HomeActivity)

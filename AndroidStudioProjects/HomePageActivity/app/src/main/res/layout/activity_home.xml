@@ -18,13 +18,13 @@
         android:layout_height="wrap_content">
     <EditText
         android:layout_width="0dip"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:id="@+id/id_search_et"
         android:hint="Search"
         android:layout_height="50dip"/>
         <Spinner
             android:layout_width="0dip"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:id="@+id/id_sort_spinner"
             android:layout_height="50dip"/>
     </LinearLayout>
